@@ -1,12 +1,16 @@
 const express = require("express");
 const os = require("os");
 const { exec } = require("child_process");
-const cors = require('cors');
+const cors = require("cors");
 const app = express();
 const PORT = 3001;
 
-// Enable CORS for all routes
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"], // allow specific origins
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use(express.json());
 
