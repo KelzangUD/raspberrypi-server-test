@@ -135,10 +135,18 @@ app.get("/disk-usage", async (req, res) => {
 // CPU temperature
 app.get("/cpu-temp", async (req, res) => {
   try {
-    const temp = await runCommand("vcgencmd measure_temp");
-    res?.send(temp);
+    const tempOutput = await runCommand("vcgencmd measure_temp"); // e.g., "temp=49.0'C\n"
+
+    // Extract the numeric temperature value
+    const match = tempOutput.match(/temp=([\d.]+)'C/);
+    const temperature = match ? parseFloat(match[1]) : null;
+
+    res.json({
+      temperatureC: temperature,
+      rawOutput: tempOutput.trim(),
+    });
   } catch (err) {
-    res?.status(500)?.send(err);
+    res.status(500).json({ error: err.toString() });
   }
 });
 
