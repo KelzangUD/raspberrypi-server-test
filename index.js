@@ -115,9 +115,20 @@ app.get("/network-info", async (req, res) => {
 app.get("/disk-usage", async (req, res) => {
   try {
     const usage = await runCommand("df -h");
-    res?.type("text/plain")?.send(usage);
+    // Parse the text output to structured JSON
+    const lines = usage.trim().split("\n");
+    const headers = lines[0].split(/\s+/);
+    const data = lines.slice(1).map((line) => {
+      const parts = line.split(/\s+/);
+      const entry = {};
+      headers.forEach((header, i) => {
+        entry[header] = parts[i];
+      });
+      return entry;
+    });
+    res.json(data);
   } catch (err) {
-    res?.status(500)?.send(err);
+    res.status(500).json({ error: err.toString() });
   }
 });
 
