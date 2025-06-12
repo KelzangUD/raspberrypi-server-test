@@ -1,8 +1,12 @@
 const express = require("express");
 const os = require("os");
 const { exec } = require("child_process");
+const cors = require('cors');
 const app = express();
 const PORT = 3001;
+
+// Enable CORS for all routes
+app.use(cors());
 
 app.use(express.json());
 
