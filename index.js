@@ -145,7 +145,7 @@ app.post("/gpio", async (req, res) => {
 });
 
 // Start Server
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(
     `Raspberry Pi Control Center server running at http://localhost:${PORT}`
   );
