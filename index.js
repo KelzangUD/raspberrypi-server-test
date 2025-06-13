@@ -119,11 +119,20 @@ app.get("/network-info", async (req, res) => {
     );
     const mac = await runCommand(`cat /sys/class/net/${iface}/address`);
     const publicIp = await runCommand("curl -s ifconfig.me");
-    res?.status(200)?.json({
-      ip,
-      mac,
-      publicIp,
-    });
+    res?.status(200)?.json([
+      {
+        name: "IP",
+        description: ip,
+      },
+      {
+        name: "MAC",
+        description: mac,
+      },
+      {
+        name: "Public IP",
+        description: publicIp,
+      },
+    ]);
   } catch (err) {
     res?.status(500)?.send(err);
   }
