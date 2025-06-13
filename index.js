@@ -33,14 +33,32 @@ app.get("/system-info", async (req, res) => {
     const uptime = await runCommand("uptime -p");
     const cpu = await runCommand("lscpu | grep 'Model name' | cut -d ':' -f 2");
     const mem = await runCommand(`free -h | awk '/Mem/{print $3 "/"$2}'`);
-    res.json({
-      hostname: os.hostname(),
-      os: osInfo,
-      kernel,
-      uptime,
-      cpu: cpu?.trim(),
-      memory: mem,
-    });
+    res.json([
+      {
+        name: "Hostname",
+        description: os.hostname(),
+      },
+      {
+        name: "OS",
+        description: osInfo,
+      },
+      {
+        name: "Kernel",
+        description: kernel,
+      },
+      {
+        name: "Uptime",
+        description: uptime,
+      },
+      {
+        name: "CPU",
+        description: cpu?.trim(),
+      },
+      {
+        name: "Memory",
+        description: mem,
+      },
+    ]);
   } catch (err) {
     res?.status(500)?.send(err);
   }
