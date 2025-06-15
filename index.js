@@ -98,17 +98,22 @@ app.post("/shutdown", async (req, res) => {
 
 // Manage Service
 app.post("/service", async (req, res) => {
-  const { action, name } = req?.body;
+  const { action, name } = req.body;
+
   if (!["start", "stop", "restart"].includes(action) || !name) {
-    return res
-      ?.status(400)
-      ?.json({ message: "Invalid service action or name" });
+    return res.status(400).json({ message: "Invalid service action or name" });
   }
+
   try {
     await runCommand(`sudo systemctl ${action} ${name}`);
-    res?.status(200)?.json({ message: "Action Successful" });
+    res
+      .status(200)
+      .json({ message: `Service: ${name} (${action}) successful` });
   } catch (err) {
-    res?.status(500)?.send(err);
+    res.status(500).json({
+      message: "Failed to manage service",
+      error: err.message || String(err),
+    });
   }
 });
 
@@ -196,7 +201,7 @@ app.post("/gpio", async (req, res) => {
     }
     res.send(result);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json({ message: err });
   }
 });
 
