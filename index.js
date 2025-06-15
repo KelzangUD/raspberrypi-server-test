@@ -100,11 +100,13 @@ app.post("/shutdown", async (req, res) => {
 app.post("/service", async (req, res) => {
   const { action, name } = req?.body;
   if (!["start", "stop", "restart"].includes(action) || !name) {
-    return res?.status(400)?.send("Invalid service action or name");
+    return res
+      ?.status(400)
+      ?.json({ message: "Invalid service action or name" });
   }
   try {
     await runCommand(`sudo systemctl ${action} ${name}`);
-    res?.send(200)?.(`Service: ${name} (${action})`);
+    res?.status(200)?.json({ message: "Action Successful" });
   } catch (err) {
     res?.status(500)?.send(err);
   }
