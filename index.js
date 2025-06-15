@@ -4,7 +4,6 @@ const { exec } = require("child_process");
 const cors = require("cors");
 const app = express();
 const PORT = 3001;
-const { spawn } = require("child_process");
 
 app.use(
   cors({
@@ -16,27 +15,11 @@ app.use(
 app.use(express.json());
 
 // Helper to run shell commands
-// function runCommand(cmd) {
-//   return new Promise((resolve, reject) => {
-//     exec(cmd, (error, stdout, stderr) => {
-//       if (error) return reject(stderr || error?.message);
-//       resolve(stdout.trim());
-//     });
-//   });
-// }
-function runCommand(cmd, args = []) {
+function runCommand(cmd) {
   return new Promise((resolve, reject) => {
-    const proc = spawn(cmd, args, { shell: true });
-
-    proc.stdout.on("data", (data) => console.log(data.toString()));
-    proc.stderr.on("data", (data) => console.error(data.toString()));
-
-    proc.on("close", (code) => {
-      if (code === 0) {
-        resolve(`Command exited with code ${code}`);
-      } else {
-        reject(`Command failed with code ${code}`);
-      }
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) return reject(stderr || error?.message);
+      resolve(stdout.trim());
     });
   });
 }
