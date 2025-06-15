@@ -68,7 +68,7 @@ app.get("/system-info", async (req, res) => {
 app.post("/update-system", async (req, res) => {
   try {
     await runCommand(
-      "sudo apt update && sudo apt upgrade -y && suo apt autoremove -y"
+      "sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
     );
     res?.status(200).send("System Updated successfully!");
   } catch (err) {
