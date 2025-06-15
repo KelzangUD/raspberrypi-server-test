@@ -80,9 +80,9 @@ app.post("/update-system", async (req, res) => {
 app.post("/reboot", async (req, res) => {
   try {
     await runCommand("sudo reboot");
-    res.status(200)?.send("System updated successfully");
+    res.status(200)?.json({ message: "Rebooted Successfully!" });
   } catch (err) {
-    res?.status(500)?.send(err);
+    res?.status(500)?.json({ message: err });
   }
 });
 
@@ -90,9 +90,9 @@ app.post("/reboot", async (req, res) => {
 app.post("/shutdown", async (req, res) => {
   try {
     await runCommand("sudo shutdown now");
-    res?.status(200)?.send("Shut down Successful!");
+    res?.status(200)?.json({ message: "Shut Down Successfully!" });
   } catch (err) {
-    res?.status(500)?.send(err);
+    res?.status(500)?.json({ message: err });
   }
 });
 
