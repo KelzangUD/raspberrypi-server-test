@@ -213,7 +213,13 @@ app.post("/ping", async (req, res) => {
   }
   try {
     await runCommand(`ping -n 1 ${ip}`);
-    res.status(200).json({ message: "Successfully Ping!" });
+    res.status(200).json({
+      message: "Successfully Ping!",
+      result: output
+        .split("\n")
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0),
+    });
   } catch (err) {
     res.status(500).json({ message: err.toString() });
   }
