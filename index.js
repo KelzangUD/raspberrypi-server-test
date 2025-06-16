@@ -208,18 +208,14 @@ app.post("/gpio", async (req, res) => {
 // Command to ping a slave
 app.post("/ping", async (req, res) => {
   const { ip } = req.body;
-  // exec(`ping -c 1 ${ip}`, (error, stdout, stderr) => {
-  //   if (error) {
-  //     return res.status(500).send(`Ping failed: ${stderr}`);
-  //   }
-  //   res.send(`Ping successful:\n${stdout}`);
-  // });
-  res?.send(ip);
+  if (!ip) {
+    return res.status(400).json({ message: "IP address required" });
+  }
   try {
-    await runCommand(`ping -c 1 ${ip}`);
-    res?.status(200)?.json({ message: "Successfully Ping!" });
+    await runCommand(`ping -n 1 ${ip}`);
+    res.status(200).json({ message: "Successfully Ping!" });
   } catch (err) {
-    res?.status(500)?.json({ message: err });
+    res.status(500).json({ message: err.toString() });
   }
 });
 
