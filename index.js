@@ -214,6 +214,7 @@ app.post("/ping", async (req, res) => {
   //   }
   //   res.send(`Ping successful:\n${stdout}`);
   // });
+  res?.send(ip);
   try {
     await runCommand(`ping -c 1 ${ip}`);
     res?.status(200)?.json({ message: "Successfully Ping!" });
